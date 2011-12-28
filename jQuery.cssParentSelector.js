@@ -6,7 +6,6 @@
  * Released under the MIT and GPL Licenses.
  * Date 2011-12-28
  */
-
 (function($) {
     $.fn.cssParentSelector = function() {
     	var k = 0,
