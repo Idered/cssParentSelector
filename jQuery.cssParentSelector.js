@@ -1,40 +1,80 @@
 /**
- * jQuery cssParentSelector 1.0.3
+ * jQuery cssParentSelector 1.0.4
  * http://idered.pl
  *
  * Copyright 2011, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
- * Date 2011-08-14
+ * Date 2011-12-28
  */
- (function($, b, s, i, h, a, c, d, e, f, g) {
+
+(function($) {
     $.fn.cssParentSelector = function() {
-		$('link[rel=stylesheet]').each(function() {
-			$.get(this.href, function(d){
-				a = (d.match(/[a-zA-Z0-9#\.\-_:\[\]= ]*::parent[a-zA-Z0-9#\.\-_: ]*(\{[a-zA-Z0-9\s\/\.\-:#\(\);]*\})/g));
-				for (;a[++i], c = a[i];) {
-					d = c[s]('{')[0];
-					e = d[s]('::parent')[0][s](/:|::/)[1];
-					f = $.trim(d[s]('::parent')[1]);
-					g = c[s](/\{|\}/)[1].replace(/[\t\n]*/g, '');
-					d = d[s](':')[0];	
+    	var k = 0,
+    		state, child, selectors, selector, declarations, parent,
+
+    		parse = function (css) {
+
+	    	var i = -1,
+	    		j = 0,
+	    		parsed = '',
+				matches = css.match(/[a-zA-Z0-9#\.\,\-\n\r_:\[\]= ]*::parent[a-zA-Z0-9#\.\,\-\n\r_: ]*(\{[a-zA-Z0-9\s\/\.\,\-\n\r:#\(\);]*\})/g);
+
+			if (matches) for (;matches[++i], style = matches[i];) {
+
+				// returns everything that's before '{' and splits it by comma
+				selectors = style.split('{')[0].split(',');
+
+				for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 					
-					$(d).each(function(k, m, n, t) {
-						t = $(this);
-						k = t.parent();
-						f && (k = k.find(f));
-						m = 'cps' + h++;
-						n = function() { k.toggleClass(m) };
+					// changed, selected, disabled, enabled, checked, focus
+					state = selector.split('::parent')[0].split(/:|::/)[1];
+
+					child = $.trim(selector.split('::parent')[1]) || []._;
+
+					// float: right; etc.
+					declarations = style.split(/\{|\}/)[1].replace(/[\t\n\r]*/g, '');
+
+					// p::parent => returns p
+					selector = selector.split(':')[0];
+					
+					$(selector).each(function() {
+						var $this = $(this),
+							parent = $this.parent(),
+							id = 'cps' + k++,
+							toggleFn = function() {
+								$(parent).toggleClass(id);
+							};
+
+						child && ( parent = parent.find(child) );
+
+						!state ? toggleFn() : 
+						state == 'checked' ? $this.click(toggleFn) :
+						state == 'focus' ? $this.focus(toggleFn).blur(toggleFn) : 
+						state == 'selected' || state == 'changed' ? $this.change(toggleFn) : $this[state](toggleFn);
 						
-						!e ? n() : 
-						e == 'focus' ? t.focus(n).blur(n) : 
-						e == 'selected' ? t.change(n) : t[e](n);
-						
-						b += '.' + m + '{' + g + '}';
+						parsed += '.' + id + '{' + declarations + '}';
 					});
-				};
-				$('<style type="text/css">' + b + '</style>').appendTo('head')
-			});
-		});
-		
+
+				}
+
+			};    			
+			
+			$('<style type="text/css">' + parsed + '</style>').appendTo('head');
+
+    	};
+
+    	$('link[rel=stylesheet], style').each(function() {
+    		if ($(this).is('link'))	{
+    			$.get(this.href).success(function(css) {
+    				parse (css);
+    			});
+    		} else {
+    			parse ( $(this).text() );
+    		}
+    	});
+
     };
-})(jQuery, '', 'split', -1, 0);
+
+    $().cssParentSelector();
+
+})(jQuery);
