@@ -1,10 +1,10 @@
 /**
- * jQuery cssParentSelector 1.0.4
+ * jQuery cssParentSelector 1.0.5
  * http://idered.pl
  *
  * Copyright 2011, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
- * Date 2011-12-28
+ * Date 2011-12-29
  */
 (function($) {
     $.fn.cssParentSelector = function() {
@@ -31,6 +31,7 @@
 					// changed, selected, (disabled, enabled,)* checked, focus
 					state = selector.split('::parent')[0].split(/:|::/)[1];
 
+					// does this selector have ::parent ?
 					apply = /::parent/.test(selector);
 
 					child = $.trim(selector.split('::parent')[1]) || []._;
@@ -40,12 +41,6 @@
 
 					// p::parent => returns p
 					selector = selector.split(':')[0];
-
-						console.log("--Apply => " + apply);
-						console.log("--Child => " + child);
-						console.log("--State => " + state)
-						console.log("--Style => " + declarations);					
-						console.log("--Selector => " + selector);
 
 					if ( apply ) {
 						$(selector).each(function() {
