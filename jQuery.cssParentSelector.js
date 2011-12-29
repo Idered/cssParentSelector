@@ -16,7 +16,7 @@
 	    	var i = -1,
 	    		j = 0,
 	    		parsed = '',
-				matches = css.match(/[a-zA-Z0-9#\.\,\-\n\r_:\[\]= ]*::parent[a-zA-Z0-9#\.\,\-\n\r_: ]*(\{[a-zA-Z0-9\s\/\.\,\-\n\r:#\(\);]*\})/g);
+				matches = css.match(/[a-zA-Z0-9#\.\,\-\n\r\t_:\[\]= ]*::parent[a-zA-Z0-9#\.\,\-\n\r\t_: ]*(\{[a-zA-Z0-9\s\/\.\,\-\n\r\t:#\(\);]*\})/g);
 
 			if (matches) for (;matches[++i], style = matches[i];) {
 
@@ -25,7 +25,7 @@
 
 				for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 					
-					// changed, selected, disabled, enabled, checked, focus
+					// changed, selected, (disabled, enabled,)* checked, focus
 					state = selector.split('::parent')[0].split(/:|::/)[1];
 
 					child = $.trim(selector.split('::parent')[1]) || []._;
