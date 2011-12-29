@@ -30,7 +30,7 @@ As for now plugin supports:
 * click
 * dblclick
 
-## Child
+### Child
 
 This is optional, after we've got parent of our selector, we look for this child element within it.
 
