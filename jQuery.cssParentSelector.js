@@ -9,7 +9,7 @@
 (function($) {
     $.fn.cssParentSelector = function() {
     	var k = 0,
-    		state, child, selectors, selector, declarations, parent,
+    		state, child, selectors, selector, declarations, parent, apply
 
     		parse = function (css) {
 
@@ -23,10 +23,15 @@
 				// returns everything that's before '{' and splits it by comma
 				selectors = style.split('{')[0].split(',');
 
+
 				for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 					
+						console.log("Selector => " + selector);
+
 					// changed, selected, (disabled, enabled,)* checked, focus
 					state = selector.split('::parent')[0].split(/:|::/)[1];
+
+					apply = /::parent/.test(selector);
 
 					child = $.trim(selector.split('::parent')[1]) || []._;
 
@@ -35,24 +40,34 @@
 
 					// p::parent => returns p
 					selector = selector.split(':')[0];
-					
-					$(selector).each(function() {
-						var $this = $(this),
-							parent = $this.parent(),
-							id = 'cps' + k++,
-							toggleFn = function() {
-								$(parent).toggleClass(id);
-							};
 
-						child && ( parent = parent.find(child) );
+						console.log("--Apply => " + apply);
+						console.log("--Child => " + child);
+						console.log("--State => " + state)
+						console.log("--Style => " + declarations);					
+						console.log("--Selector => " + selector);
 
-						!state ? toggleFn() : 
-						state == 'checked' ? $this.click(toggleFn) :
-						state == 'focus' ? $this.focus(toggleFn).blur(toggleFn) : 
-						state == 'selected' || state == 'changed' ? $this.change(toggleFn) : $this[state](toggleFn);
-						
-						parsed += '.' + id + '{' + declarations + '}';
-					});
+					if ( apply ) {
+						$(selector).each(function() {
+							var $this = $(this),
+								parent = $this.parent(),
+								id = 'cps' + k++,
+								toggleFn = function() {
+									$(parent).toggleClass(id);
+								};
+
+							child && ( parent = parent.find(child) );
+
+							!state ? toggleFn() : 
+							state == 'checked' ? $this.click(toggleFn) :
+							state == 'focus' ? $this.focus(toggleFn).blur(toggleFn) : 
+							state == 'selected' || state == 'changed' ? $this.change(toggleFn) : $this[state](toggleFn);
+							
+							parsed += '.' + id + '{' + declarations + '}';
+						});
+					} else {
+						parsed += selector + '{' + declarations + '}';
+					}
 
 				}
 
