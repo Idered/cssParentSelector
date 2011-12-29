@@ -23,11 +23,8 @@
 				// returns everything that's before '{' and splits it by comma
 				selectors = style.split('{')[0].split(',');
 
-
 				for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 					
-						console.log("Selector => " + selector);
-
 					// changed, selected, (disabled, enabled,)* checked, focus
 					state = selector.split('::parent')[0].split(/:|::/)[1];
 
@@ -65,7 +62,6 @@
 					}
 
 				}
-
 			};    			
 			
 			$('<style type="text/css">' + parsed + '</style>').appendTo('head');
@@ -81,7 +77,6 @@
     			parse ( $(this).text() );
     		}
     	});
-
     };
 
     $().cssParentSelector();
