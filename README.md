@@ -10,7 +10,7 @@ Released under MIT and GPL licenses.
 
 Just attach this plugin to your code and that's all.
 
-    <script src="../jQuery.cssParentSelector.js"></script>
+    <script src="jQuery.cssParentSelector.js"></script>
 
 ## Usage
 
@@ -23,6 +23,7 @@ Any vaild selector is okey, id, class, even like this one: input[type=checkbox]
 ### State
 
 As for now plugin supports: 
+
 * changed, selected
 * checked
 * focus
@@ -34,3 +35,23 @@ As for now plugin supports:
 
 This is optional, after we've got parent of our selector, we look for this child element within it.
 
+## Sample
+
+    label { display: none; }
+    
+    input::parent {
+        background: #fafafa;
+        border: 1px solid #e0e0e0;
+        padding: 10px 5px;
+    }
+    
+    input[type=text]:focus::parent label {
+        display: block;
+    }
+    
+    input[type=text]:changed::parent,
+    input[type=checkbox]:checked::parent {
+        background: #EEDC94;
+    }
+
+    
