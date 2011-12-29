@@ -39,7 +39,21 @@ input {
 
 /* Magic is below */
 
-input[type=text]:focus::parent label,	
-input {
+input::parent {
+	background: #fafafa;
+	border: 1px solid #e0e0e0;
+	padding: 10px 5px;
+}
+
+input:changed::parent {
+	background: #EEDC94;
+}
+
+input[type=text]:focus::parent label {
+	display: block;
+}
+
+input[type=text]:changed::parent .message,
+input[type=checkbox]:checked::parent .message {
 	display: inline;
 }
