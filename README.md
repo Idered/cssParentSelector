@@ -78,7 +78,7 @@ p! > input { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Select any parent of input with class */
 *! > input.dotted { border-style: dotted; }
-*! > input.dotted { border-style: dotted; }
+*! > input.dashed { border-style: dashed; }
 
 /* Select any parent of input which value was changed */
 p! > input:changed { background: #EEDC94; }
