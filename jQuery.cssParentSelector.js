@@ -2,7 +2,7 @@
  * jQuery cssParentSelector 1.0.6
  * https://github.com/Idered/cssParentSelector
  *
- * Copyright 2011, Kasper Mikiewicz
+ * Copyright 2012, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
  * Date 2012-01-18
  */ 
