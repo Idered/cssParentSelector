@@ -31,7 +31,7 @@
 
               if (/!/.test(selector)) {
 
-                // E! P > F => E P
+                // E! P > F => E
                 parent = $.trim(selector.split('!')[0]);
 
                 // E! P > F => P
