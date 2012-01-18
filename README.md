@@ -17,8 +17,11 @@ Just attach this plugin to your code and that's all.
     parent! target > child:state
 
 ### Quick info about parent selector in CSS4
+
 ! - determines subject of selector according to [CSS4 reference](http://dev.w3.org/csswg/selectors4/)
+
 E > F - selects an F element, child of E
+
 E! > F - selects an E element, parent of F
 
 ### Parent
