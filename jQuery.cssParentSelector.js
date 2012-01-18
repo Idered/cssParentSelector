@@ -1,52 +1,55 @@
 /**
- * jQuery cssParentSelector 1.0.5
- * http://idered.pl
+ * jQuery cssParentSelector 1.0.6
+ * https://github.com/Idered/cssParentSelector
  *
  * Copyright 2011, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
- * Date 2011-12-29
- */
+ * Date 2012-01-18
+ */ 
+
 (function($) {
   $.fn.cssParentSelector = function() {
     var k = 0,
-      state, child, selectors, selector, declarations, parent, str,
+      selectors, selector, parent, target, child, state, declarations,
 
       parse = function(css) {
 
-        var i = j = -1,
+        var i, j
           parsed = '',
-          matches = css.match(/[a-zA-Z0-9#\.\,\-\n\r\t_:\[\]= ]*::parent[a-zA-Z0-9#\.\,\-\n\r\t_: ]*(\{[a-zA-Z0-9\s\/\.\,\-\n\r\t:#\(\);]*\})/g);
+          matches = css.match(/[\w\s\.\[\]\=#-]*(?=!)[\w\s\.\,\[\]\=!:>#]+[\w\s>#\.\,:\[\]\=]*\{{1}[\w\s\.\,\-;:#%]+\}{1}/gi);
 
         if (matches) {
-          for (; matches[++i], style = matches[i];) {
+          for (i = -1; matches[++i], style = matches[i];) {
 
-            // returns everything that's before '{' and splits it by comma
+            // E! P > F, E F { declarations } => E! P > F, E F
             selectors = style.split('{')[0].split(',');
 
-            for (j = -1; selectors[++j], str = $.trim(selectors[j]);) {
+            for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 
-              // changed, selected, (disabled, enabled,)* checked, focus
-              state = str.split('::parent')[0].split(/:|::/)[1];
-
-              child = $.trim(str.split('::parent')[1]) || []._;
-
-              // float: right; etc.
+              // E! P > F { declarations } => declarations
               declarations = style.split(/\{|\}/)[1].replace(/[\t\n\r]*/g, '');
 
-              // p::parent => returns p
-              selector = str.split(':')[0];
+              if (/!/.test(selector)) {
 
-              // does this selector have ::parent ?
-              if (/::parent/.test(str)) {
-                $(selector).each(function() {
+                // E! P > F => E P
+                parent = $.trim(selector.split('!')[0]);
+
+                // E! P > F => P
+                target = $.trim(selector.split('!')[1].split('>')[0]) || []._;
+
+                // E! P > F => F
+                child  = $.trim(selector.split('>')[1]).split(':')[0];
+
+                // E! P > F:state => state
+                state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
+
+                $(child).each(function() {
                   var $this = $(this),
-                    parent = $this.parent(),
+                    subject = $this.parent(parent),
                     id = 'cps' + k++,
-                    toggleFn = function() {
-                      $(parent).toggleClass(id);
-                    };
+                    toggleFn = function() { $(subject).toggleClass(id) };
 
-                  child && (parent = parent.find(child));
+                  target && (subject = subject.find(target));
 
                   !state ? 
                   toggleFn() : state == 'checked' ? 
@@ -75,7 +78,6 @@
     });
   };
 
-  // Autostart
   $().cssParentSelector()
 
 })(jQuery);

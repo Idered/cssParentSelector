@@ -27,7 +27,6 @@ input {
 }
 
 #container {
-	background: #eee;
 	margin: 30px auto;
 	padding: 20px;
 	width: 920px;
@@ -39,21 +38,30 @@ input {
 
 /* Magic is below */
 
-input::parent {
-	background: #fafafa;
-	border: 1px solid #e0e0e0;
-	padding: 10px 5px;
-}
+/* Select paragraph parent of input */
+p! > input { border: 1px solid #ccc; padding: 10px 5px; }
 
-input:changed::parent {
-	background: #EEDC94;
-}
+/* Select any parent of input */
+*! > input { background: #fafafa; }
 
-input[type=text]:focus::parent label {
-	display: block;
-}
+/* Select any parent with class of input */
+*.custom! > input { background: #f5f5f5; }
 
-input[type=text]:changed::parent .message,
-input[type=checkbox]:checked::parent .message {
+/* Select any parent with class of input */
+#container! > p { background: #eee; }
+
+/* Select any parent of input with class */
+*! > input.dotted { border-style: dotted; }
+*! > input.dotted { border-style: dotted; }
+
+/* Select any parent of input which value was changed */
+p! > input:changed { background: #EEDC94; }
+
+/* Select label within parent of focused text input */
+p! label > input[type=text]:focus { display: block; }
+
+/* Select element with definied class within parent of changed/checked text/checkbox input */
+p! .message > input[type=text]:changed,
+p! .message > input[type=checkbox]:checked {
 	display: inline;
 }
