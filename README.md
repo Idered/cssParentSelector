@@ -17,8 +17,11 @@ Just attach this plugin to your code and that's all.
     parent! target > child:state
 
 ### Quick info about parent selector in CSS4
+
 ! - determines subject of selector according to [CSS4 reference](http://dev.w3.org/csswg/selectors4/)
+
 E > F - selects an F element, child of E
+
 E! > F - selects an E element, parent of F
 
 ### Parent
@@ -47,32 +50,25 @@ As for now plugin supports:
 ## Sample
 
 ```html
-  <div id="container">
+<div id="container">
     <p>
-      <label>Change value and click somewhere</label>
-      <input type="text" name="name" placeholder="Value" class="dotted">
-      <span class="message">Yay, you've changed value.</span>
+        <label>Change value and click somewhere</label>
+        <input type="text" name="name" placeholder="Value" class="dotted">
+        <span class="message">Yay, you've changed value.</span>
     </p>
-    
     <p class="custom">
-      <input type="checkbox" name="name" placeholder="Value" class="dashed">
-      <span class="message">Yay, you've checked.</span>
+        <input type="checkbox" name="name" placeholder="Value" class="dashed">
+        <span class="message">Yay, you've checked.</span>
     </p>
-
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua.
-      <a href="#" class="hide-parent">&#x2716;</a>
-    </p>
-  </div>
+</div>
 ```
 
 ```css
 /* Select paragraph parent of input */
-p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
+p! > input { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Select any parent of input */
-*! > input, p! > a { background: #fafafa; }
+*! > input { background: #fafafa; }
 
 /* Select any parent with class of input */
 *.custom! > input { background: #f5f5f5; }
@@ -84,20 +80,11 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 *! > input.dotted { border-style: dotted; }
 *! > input.dashed { border-style: dashed; }
 
-/* En empty declaration, just for tests */
-*! > p { 
-
-}
-
-/* Hide an message box */
-.hide-parent { float: right; }
-p! > .hide-parent:click { display: none; /* Comment inside declaration */ }
-
 /* Select any parent of input which value was changed */
 p! > input:changed { background: #EEDC94; }
 
 /* Select label within parent of focused text input */
-p! label > input[type=text]:focus{ display: block; }
+p! label > input[type=text]:focus { display: block; }
 
 /* Select element with definied class within parent of changed/checked text/checkbox input */
 p! .message > input[type=text]:changed,
