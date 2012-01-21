@@ -9,27 +9,41 @@
 
 (function($) {
   $.fn.cssParentSelector = function() {
-    var k = 0,
-      selectors, selector, parent, target, child, state, declarations,
+    var 
+
+      k = 0, i, j,
+
+      CLASS = 'CPS',
+      
+      parsed, matches, selectors, selector, parent, target, child, state, declarations,
+
+      REGEX = /[\w\s\.\[\]\=\*:#-]*(?=!)[\w\s\.\,\[\]\=\*:#->!]+[\w\s\.\,\[\]\=:#->]*\{{1}[\w\s\.\,\-\\\/\*;:#%]+\}{1}/gi,
 
       parse = function(css) {
 
-        var i, j
-          parsed = '',
-          matches = css.match(/[\w\s\.\[\]\=#-]*(?=!)[\w\s\.\,\[\]\=!:>#]+[\w\s>#\.\,:\[\]\=]*\{{1}[\w\s\.\,\-;:#%]+\}{1}/gi);
+        // Remove comments.
+        css = css.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
+        
+        if ( matches = css.match(REGEX) ) {
+          
+          parsed = '';
 
-        if (matches) {
           for (i = -1; matches[++i], style = matches[i];) {
 
             // E! P > F, E F { declarations } => E! P > F, E F
             selectors = style.split('{')[0].split(',');
 
+            // E! P > F { declarations } => declarations
+            declarations = '{' + style.split(/\{|\}/)[1].replace(/^\s+|\s+$[\t\n\r]*/g, '') + '}';
+
+            // There's nothing so we can skip this one.
+            if ( declarations === '{}' ) continue;
+
             for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
+                  
+              j && (parsed += ',');
 
-              // E! P > F { declarations } => declarations
-              declarations = style.split(/\{|\}/)[1].replace(/[\t\n\r]*/g, '');
-
-              if (/!/.test(selector)) {
+              if (/!/.test(selector) ) {
 
                 // E! P > F => E
                 parent = $.trim(selector.split('!')[0]);
@@ -43,39 +57,47 @@
                 // E! P > F:state => state
                 state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
 
-                $(child).each(function() {
-                  var $this = $(this),
-                    subject = $this.parent(parent),
-                    id = 'cps' + k++,
-                    toggleFn = function() { $(subject).toggleClass(id) };
-
+                $(child).each(function(i) {
+                  var subject = $(this).parent(parent),
+                    id = CLASS + k++,
+                    toggleFn = function() { $(subject).toggleClass(id) },
+                    stateMap = {
+                      'checked' : 'click',
+                      'focus'   : 'focus blur',
+                      'selected': 'change',
+                      'changed' : 'change'
+                    };
+                                    
+                  i && (parsed += ',');
                   target && (subject = subject.find(target));
 
-                  !state ? 
-                  toggleFn() : state == 'checked' ? 
-                  $this.click(toggleFn) : state == 'focus' ? 
-                  $this.focus(toggleFn).blur(toggleFn) : state == 'selected' || state == 'changed' ? 
-                  $this.change(toggleFn) : $this[state](toggleFn);
+                  parsed += '.' + id;
 
-                  parsed += '.' + id + '{' + declarations + '}'
+                  ! state ? toggleFn() : $(this).on( stateMap[state] ? stateMap[state] : state , toggleFn );
+
                 });
               } else {
-                parsed += selector + '{' + declarations + '}'
+                parsed += selector;
               }
-
             }
+
+            parsed += declarations;
+
           };
 
-          $('<style type="text/css">' + parsed + '</style>').appendTo('head')
+          console.log(parsed.length);
+
+          $('<style type="text/css">' + parsed + '</style>').appendTo('head');
+
         }
 
       };
 
     $('link[rel=stylesheet], style').each(function() {
-      $(this).is('link') ? $.get(this.href).success(function(css) {
-        parse(css)
-      }) : parse($(this).text())
+      $(this).is('link') ? 
+      $.get(this.href).success(function(css) { parse(css); }) : parse($(this).text());
     });
+
   };
 
   $().cssParentSelector()
