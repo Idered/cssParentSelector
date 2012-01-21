@@ -85,8 +85,7 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Select any parent of input with class */
 *! > input.dotted { border-style: dotted; }
-*! > input.dashed { border-style: dashed; }
-<<<<<<< HEAD
+*! > input.dashed { border-style: dashed; }=
 
 /* En empty declaration, just for tests */
 *! > p { 
@@ -95,9 +94,7 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Hide an message box */
 .hide-parent { float: right; }
-p! > .hide-parent:click { display: none; /* Comment inside declaration */ }
-=======
->>>>>>> 23e43c6dc96d289b3f069c8c953c296de055acb9
+p! > .hide-parent:click { display: none; /* Comment inside declaration */ }=
 
 /* Select any parent of input which value was changed */
 p! > input:changed { background: #EEDC94; }
