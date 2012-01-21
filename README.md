@@ -111,6 +111,12 @@ p! .message > input[type=checkbox]:checked {
 
 ## Changelog
 
+* **1.0.7** - *21.01.2012*
+  * Now before matchig css for definied regex we strip comments
+  * Empty declarations are omitted
+  * Better regex
+  * Optimized code
+
 * **1.0.6** - *18.01.2012*
   * Changed structure to the one described in CSS4 reference
   * Improved performance
