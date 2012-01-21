@@ -1,10 +1,10 @@
 /**
- * jQuery cssParentSelector 1.0.6
+ * jQuery cssParentSelector 1.0.7
  * https://github.com/Idered/cssParentSelector
  *
  * Copyright 2012, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
- * Date 2012-01-18
+ * Date 2012-01-21
  */ 
 
 (function($) {
@@ -25,7 +25,7 @@
         css = css.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
         
         if ( matches = css.match(REGEX) ) {
-          
+
           parsed = '';
 
           for (i = -1; matches[++i], style = matches[i];) {
