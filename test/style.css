@@ -445,6 +445,13 @@ table {
     border-spacing: 0;
 }
 
+
+
+/* =============================================================================
+   cssParentSelector test styles
+   ========================================================================== */
+
+
 body {
 	font-family: Arial;
 	font-size: 12px;
@@ -504,6 +511,8 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Hide an message box */
 .hide-parent { float: right; }
+p! > .hide-parent:hover { background-color: #F44; color: #fff; }
+p! > .hide-parent:active { background-color: #F22; color: #fff; }
 p! > .hide-parent:click { display: none; /* Comment inside declaration */ }
 
 /* Select any parent of input which value was changed */

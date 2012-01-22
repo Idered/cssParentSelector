@@ -13,6 +13,22 @@
 
       k = 0, i, j,
 
+      stateMap = {
+        'checked' : 'click',
+        'focus'   : 'focus blur',
+        'active': 'mousedown mouseup',
+        'selected': 'change',
+        'changed' : 'change'
+      },
+
+      attachStateMap = {
+        'mousedown' : 'mouseout'
+      },
+
+      detachStateMap = {
+        'mouseup'   : 'mouseout'
+      },
+
       CLASS = 'CPS',
       
       parsed, matches, selectors, selector, parent, target, child, state, declarations,
@@ -52,20 +68,23 @@
                 target = $.trim(selector.split('!')[1].split('>')[0]) || []._;
 
                 // E! P > F => F
-                child  = $.trim(selector.split('>')[1]).split(':')[0];
+                child  = $($.trim(selector.split('>')[1]).split(':')[0]);
 
                 // E! P > F:state => state
                 state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
 
-                $(child).each(function(i) {
+                child.each(function(i) {
                   var subject = $(this).parent(parent),
                     id = CLASS + k++,
-                    toggleFn = function() { $(subject).toggleClass(id) },
-                    stateMap = {
-                      'checked' : 'click',
-                      'focus'   : 'focus blur',
-                      'selected': 'change',
-                      'changed' : 'change'
+                    toggleFn = function(e) {
+
+                      e && attachStateMap[e.type] && 
+                        $(subject).one(attachStateMap[e.type], function() {$(subject).toggleClass(id) });
+
+                      e && detachStateMap[e.type] && 
+                        $(subject).off(detachStateMap[e.type]);
+
+                      $(subject).toggleClass(id) 
                     };
                                     
                   i && (parsed += ',');
@@ -84,8 +103,6 @@
             parsed += declarations;
 
           };
-
-          console.log(parsed.length);
 
           $('<style type="text/css">' + parsed + '</style>').appendTo('head');
 
