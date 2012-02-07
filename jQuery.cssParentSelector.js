@@ -104,6 +104,7 @@
 
           };
 
+          parsed = parsed.replace(/;/g, ' !important;');
           $('<style type="text/css">' + parsed + '</style>').appendTo('head');
 
         }
