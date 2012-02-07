@@ -493,6 +493,7 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Select any parent of input */
 *! > input, p! > a { background: #fafafa; }
+div.bluebg p! span > a { background: #39f; }
 
 /* Select any parent with class of input */
 *.custom! > input { background: #f5f5f5; }

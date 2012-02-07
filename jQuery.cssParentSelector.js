@@ -5,11 +5,11 @@
  * Copyright 2012, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
  * Date 2012-01-21
- */ 
+ */
 
 (function($) {
   $.fn.cssParentSelector = function() {
-    var 
+    var
 
       k = 0, i, j,
 
@@ -55,6 +55,8 @@
             // There's nothing so we can skip this one.
             if ( declarations === '{}' ) continue;
 
+            declarations = declarations.replace(/;/g, ' !important;');
+
             for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
                   
               j && (parsed += ',');
@@ -87,12 +89,12 @@
                       $(subject).toggleClass(id) 
                     };
                                     
-                  i && (parsed += ',');
                   target && (subject = subject.find(target));
 
+                  i && (parsed += ',');
+                  
                   parsed += '.' + id;
-
-                  ! state ? toggleFn() : $(this).on( stateMap[state] ? stateMap[state] : state , toggleFn );
+                  ! state ? toggleFn() : $(this).on( stateMap[state] || state , toggleFn );
 
                 });
               } else {
@@ -106,7 +108,7 @@
 
           $('<style type="text/css">' + parsed + '</style>').appendTo('head');
 
-        }
+        };
 
       };
 
