@@ -120,7 +120,7 @@ p:after! > input {
 
 ## Changelog
 
-* **1.0.8** - *21.01.2012*
+* **1.0.8** - *07.02.2012*
   * Added support for pseudo classes (after, before, first-child, last-child, nth-child(), active and anything that jquery filter function can handle)
   * Added !important to all declarations.
 
