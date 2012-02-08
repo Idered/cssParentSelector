@@ -527,3 +527,15 @@ p! .message > input[type=text]:changed,
 p! .message > input[type=checkbox]:checked {
 	display: inline;
 }
+p! span:first-child> input {
+  display: block;
+}
+p:after! > input {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #111;
+}
+p! span:first-child> input {
+  background-color: #edd;
+}

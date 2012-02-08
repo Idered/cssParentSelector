@@ -1,39 +1,49 @@
 /**
- * jQuery cssParentSelector 1.0.7
+ * jQuery cssParentSelector 1.0.8
  * https://github.com/Idered/cssParentSelector
  *
- * Copyright 2012, Kasper Mikiewicz
+ * Copyright 2011-2012, Kasper Mikiewicz
  * Released under the MIT and GPL Licenses.
- * Date 2012-01-21
+ * Date 2012-02-08
  */
 
 (function($) {
+
   $.fn.cssParentSelector = function() {
     var
 
       k = 0, i, j,
 
+      CLASS = 'CPS',
+
       stateMap = {
-        'checked' : 'click',
-        'focus'   : 'focus blur',
-        'active': 'mousedown mouseup',
-        'selected': 'change',
-        'changed' : 'change'
+        checked : 'click',
+        focus   : 'focus blur',
+        active  : 'mousedown mouseup',
+        selected: 'change',
+        changed : 'change'
       },
 
       attachStateMap = {
-        'mousedown' : 'mouseout'
+        mousedown : 'mouseout'
       },
 
       detachStateMap = {
-        'mouseup'   : 'mouseout'
+        mouseup   : 'mouseout'
       },
 
-      CLASS = 'CPS',
-      
-      parsed, matches, selectors, selector, parent, target, child, state, declarations,
+      pseudoMap = {
+        'after'       : 'appendTo',
+        'before'      : 'prependTo'
+      },
 
-      REGEX = /[\w\s\.\[\]\=\*:#-]*(?=!)[\w\s\.\,\[\]\=\*:#->!]+[\w\s\.\,\[\]\=:#->]*\{{1}[\w\s\.\,\-\\\/\*;:#%]+\}{1}/gi,
+      pseudo = {},
+      
+      parsed, matches, selectors, selector, 
+      parent, target, child, state, declarations, 
+      pseudoParent, pseudoTarget,
+
+      REGEX = /[\w\s\.\[\]\(\)\=\*:#-]*(?=!)[\w\s\.\,\[\]\(\)\=\*:#->!]+[\w\s\.\,\[\]\=:#->]*\{{1}[\w\s\.\,\-\\\/\*;:#%]+\}{1}/gi,
 
       parse = function(css) {
 
@@ -64,10 +74,16 @@
               if (/!/.test(selector) ) {
 
                 // E! P > F => E
-                parent = $.trim(selector.split('!')[0]);
+                parent = $.trim(selector.split('!')[0].split(':')[0]);
 
                 // E! P > F => P
-                target = $.trim(selector.split('!')[1].split('>')[0]) || []._;
+                target = $.trim(selector.split('!')[1].split('>')[0].split(':')[0]) || []._;
+
+                // E:after! P > after
+                pseudoParent = $.trim(selector.split('>')[0].split('!')[0].split(':')[1]) || []._;
+
+                // E! P:after > after
+                pseudoTarget = target ? ($.trim(selector.split('>')[0].split('!')[1].split(':')[1]) || []._) : []._;
 
                 // E! P > F => F
                 child  = $($.trim(selector.split('>')[1]).split(':')[0]);
@@ -75,9 +91,22 @@
                 // E! P > F:state => state
                 state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
 
+
                 child.each(function(i) {
-                  var subject = $(this).parent(parent),
-                    id = CLASS + k++,
+
+                  var subject = $(this).parent(parent); 
+
+                  pseudoParent && (subject = pseudoMap[pseudoParent] ?
+                    $('<div></div>')[pseudoMap[pseudoParent]](subject) :
+                    subject.filter(':' + pseudoParent));
+
+                  target && (subject = subject.find(target));
+
+                  target && pseudoTarget && (subject = pseudoMap[pseudoTarget] ?
+                    $('<div></div>')[pseudoMap[pseudoTarget]](subject) :
+                    subject.filter(':' + pseudoTarget));
+
+                  var id = CLASS + k++,
                     toggleFn = function(e) {
 
                       e && attachStateMap[e.type] && 
@@ -88,9 +117,7 @@
 
                       $(subject).toggleClass(id) 
                     };
-                                    
-                  target && (subject = subject.find(target));
-
+                       
                   i && (parsed += ',');
                   
                   parsed += '.' + id;

@@ -46,6 +46,7 @@ As for now plugin supports:
 * hover
 * click
 * dblclick
+* active
 
 ## Sample
 
@@ -71,10 +72,10 @@ As for now plugin supports:
 ```
 
 ```css
-/* Select paragraph parent of input */
+/* Select paragraph parent of input or a*/
 p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
-/* Select any parent of input */
+/* Select any parent of input or a*/
 *! > input, p! > a { background: #fafafa; }
 
 /* Select any parent with class of input */
@@ -107,9 +108,21 @@ p! .message > input[type=text]:changed,
 p! .message > input[type=checkbox]:checked {
     display: inline;
 }
+
+p! span:first-child> input { display: block; }
+p:after! > input {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #111;
+}
 ```
 
 ## Changelog
+
+* **1.0.8** - *21.01.2012*
+  * Added support for pseudo classes (after, before, first-child, last-child, nth-child(), active and anything that jquery filter function can handle)
+  * Added !important to all declarations.
 
 * **1.0.7** - *21.01.2012*
   * Now before matchig css for definied regex we strip comments
