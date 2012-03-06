@@ -53,7 +53,6 @@
         if ( matches = css.match(REGEX) ) {
 
           parsed = '';
-          console.log(matches);
           for (i = -1; matches[++i], style = matches[i];) {
 
             // E! P > F, E F { declarations } => E! P > F, E F
