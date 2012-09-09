@@ -1,6 +1,6 @@
 # What is cssParentSelector
 
-cssParentSelector is a polyfill based on [jQuery](http://jquery.com/) that allows you to use parent selector in CSS. 
+cssParentSelector is a polyfill based on [jQuery](http://jquery.com/) that allows you to use parent selector in CSS.
 
 ## License
 
@@ -38,7 +38,7 @@ Based on this, we select PARENT element.
 
 ### State
 
-As for now plugin supports: 
+As for now plugin supports:
 
 * changed, selected
 * checked
@@ -57,7 +57,7 @@ As for now plugin supports:
       <input type="text" name="name" placeholder="Value" class="dotted">
       <span class="message">Yay, you've changed value.</span>
     </p>
-    
+
     <p class="custom">
       <input type="checkbox" name="name" placeholder="Value" class="dashed">
       <span class="message">Yay, you've checked.</span>
@@ -89,7 +89,7 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 *! > input.dashed { border-style: dashed; }=
 
 /* En empty declaration, just for tests */
-*! > p { 
+*! > p {
 
 }
 
@@ -119,6 +119,10 @@ p:after! > input {
 ```
 
 ## Changelog
+
+* **1.0.9** - *09.09.2012 *
+  * Added support for images in css bacground property (// in image link was interpreted as comment)
+  * Minified version
 
 * **1.0.8** - *07.02.2012 *
   * Added support for pseudo classes (after, before, first-child, last-child, nth-child(), active and anything that jquery filter function can handle)

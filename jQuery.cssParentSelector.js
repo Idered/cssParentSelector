@@ -15,24 +15,24 @@
             CLASS = 'CPS',
 
             stateMap = {
-                checked : 'click',
-                focus     : 'focus blur',
-                active    : 'mousedown mouseup',
+                checked: 'click',
+                focus: 'focus blur',
+                active: 'mousedown mouseup',
                 selected: 'change',
-                changed : 'change'
+                changed: 'change'
             },
 
             attachStateMap = {
-                mousedown : 'mouseout'
+                mousedown: 'mouseout'
             },
 
             detachStateMap = {
-                mouseup     : 'mouseout'
+                mouseup: 'mouseout'
             },
 
             pseudoMap = {
-                'after'             : 'appendTo',
-                'before'            : 'prependTo'
+                'after': 'appendTo',
+                'before': 'prependTo'
             },
 
             pseudo = {},
