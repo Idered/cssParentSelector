@@ -1,5 +1,5 @@
 /**
- * jQuery cssParentSelector 1.0.8
+ * jQuery cssParentSelector 1.0.9
  * https://github.com/Idered/cssParentSelector
  *
  * Copyright 2011-2012, Kasper Mikiewicz
@@ -9,142 +9,140 @@
 
 (function($) {
 
-  $.fn.cssParentSelector = function() {
-    var
+    $.fn.cssParentSelector = function() {
+        var k = 0, i, j,
 
-      k = 0, i, j,
+            CLASS = 'CPS',
 
-      CLASS = 'CPS',
+            stateMap = {
+                checked : 'click',
+                focus     : 'focus blur',
+                active    : 'mousedown mouseup',
+                selected: 'change',
+                changed : 'change'
+            },
 
-      stateMap = {
-        checked : 'click',
-        focus   : 'focus blur',
-        active  : 'mousedown mouseup',
-        selected: 'change',
-        changed : 'change'
-      },
+            attachStateMap = {
+                mousedown : 'mouseout'
+            },
 
-      attachStateMap = {
-        mousedown : 'mouseout'
-      },
+            detachStateMap = {
+                mouseup     : 'mouseout'
+            },
 
-      detachStateMap = {
-        mouseup   : 'mouseout'
-      },
+            pseudoMap = {
+                'after'             : 'appendTo',
+                'before'            : 'prependTo'
+            },
 
-      pseudoMap = {
-        'after'       : 'appendTo',
-        'before'      : 'prependTo'
-      },
+            pseudo = {},
 
-      pseudo = {},
-      
-      parsed, matches, selectors, selector, 
-      parent, target, child, state, declarations, 
-      pseudoParent, pseudoTarget,
+            parsed, matches, selectors, selector,
+            parent, target, child, state, declarations,
+            pseudoParent, pseudoTarget,
 
-      REGEX = /[\w\s\"\'\.\[\]\(\)\=\*:#-]*(?=!)[\w\s\.\,\[\]\(\)\=\*:#->!]+[\w\s\"\'\.\,\[\]\=:#->]*\{{1}[\w\s\.\,\-\\\/\*;:#%]+\}{1}/gi,
+            REGEX = /[\w\s\"\'\.\[\]\(\)\=\*\-\:#]*(?=!)[\w\s\.\,\[\]\(\)\=\*\-\:#>!]+[\w\s\"\'\.\,\[\]\=\:\-#>]*\{{1}[\.\*\/\?\:\^\+\\\=\|\w\s\'-;#%]+\}{1}/gi,
 
-      parse = function(css) {
+            parse = function(css) {
 
-        // Remove comments.
-        css = css.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
-        
-        if ( matches = css.match(REGEX) ) {
+                // Remove comments.
+                css = css.replace(/(\/\*([\s\S]*?)\*\/)/gm, '');
 
-          parsed = '';
-          for (i = -1; matches[++i], style = matches[i];) {
+                if ( matches = css.match(REGEX) ) {
 
-            // E! P > F, E F { declarations } => E! P > F, E F
-            selectors = style.split('{')[0].split(',');
+                    parsed = '';
+                    for (i = -1; matches[++i], style = matches[i];) {
 
-            // E! P > F { declarations } => declarations
-            declarations = '{' + style.split(/\{|\}/)[1].replace(/^\s+|\s+$[\t\n\r]*/g, '') + '}';
+                        // E! P > F, E F { declarations } => E! P > F, E F
+                        selectors = style.split('{')[0].split(',');
 
-            // There's nothing so we can skip this one.
-            if ( declarations === '{}' ) continue;
+                        // E! P > F { declarations } => declarations
+                        declarations = '{' + style.split(/\{|\}/)[1].replace(/^\s+|\s+$[\t\n\r]*/g, '') + '}';
 
-            declarations = declarations.replace(/;/g, ' !important;');
+                        // There's nothing so we can skip this one.
+                        if ( declarations === '{}' ) continue;
 
-            for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
-                  
-              j && (parsed += ',');
+                        declarations = declarations.replace(/;/g, ' !important;');
 
-              if (/!/.test(selector) ) {
+                        for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 
-                // E! P > F => E
-                parent = $.trim(selector.split('!')[0].split(':')[0]);
+                            j && (parsed += ',');
 
-                // E! P > F => P
-                target = $.trim(selector.split('!')[1].split('>')[0].split(':')[0]) || []._;
+                            if (/!/.test(selector) ) {
 
-                // E:after! P > after
-                pseudoParent = $.trim(selector.split('>')[0].split('!')[0].split(':')[1]) || []._;
+                                // E! P > F => E
+                                parent = $.trim(selector.split('!')[0].split(':')[0]);
 
-                // E! P:after > after
-                pseudoTarget = target ? ($.trim(selector.split('>')[0].split('!')[1].split(':')[1]) || []._) : []._;
+                                // E! P > F => P
+                                target = $.trim(selector.split('!')[1].split('>')[0].split(':')[0]) || []._;
 
-                // E! P > F => F
-                child  = $($.trim(selector.split('>')[1]).split(':')[0]);
+                                // E:after! P > after
+                                pseudoParent = $.trim(selector.split('>')[0].split('!')[0].split(':')[1]) || []._;
 
-                // E! P > F:state => state
-                state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
+                                // E! P:after > after
+                                pseudoTarget = target ? ($.trim(selector.split('>')[0].split('!')[1].split(':')[1]) || []._) : []._;
+
+                                // E! P > F => F
+                                child    = $($.trim(selector.split('>')[1]).split(':')[0]);
+
+                                // E! P > F:state => state
+                                state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
 
 
-                child.each(function(i) {
+                                child.each(function(i) {
 
-                  var subject = $(this).parent(parent); 
+                                    var subject = $(this).parent(parent);
 
-                  pseudoParent && (subject = pseudoMap[pseudoParent] ?
-                    $('<div></div>')[pseudoMap[pseudoParent]](subject) :
-                    subject.filter(':' + pseudoParent));
+                                    pseudoParent && (subject = pseudoMap[pseudoParent] ?
+                                        $('<div></div>')[pseudoMap[pseudoParent]](subject) :
+                                        subject.filter(':' + pseudoParent));
 
-                  target && (subject = subject.find(target));
+                                    target && (subject = subject.find(target));
 
-                  target && pseudoTarget && (subject = pseudoMap[pseudoTarget] ?
-                    $('<div></div>')[pseudoMap[pseudoTarget]](subject) :
-                    subject.filter(':' + pseudoTarget));
+                                    target && pseudoTarget && (subject = pseudoMap[pseudoTarget] ?
+                                        $('<div></div>')[pseudoMap[pseudoTarget]](subject) :
+                                        subject.filter(':' + pseudoTarget));
 
-                  var id = CLASS + k++,
-                    toggleFn = function(e) {
+                                    var id = CLASS + k++,
+                                        toggleFn = function(e) {
 
-                      e && attachStateMap[e.type] && 
-                        $(subject).one(attachStateMap[e.type], function() {$(subject).toggleClass(id) });
+                                            e && attachStateMap[e.type] &&
+                                                $(subject).one(attachStateMap[e.type], function() {$(subject).toggleClass(id) });
 
-                      e && detachStateMap[e.type] && 
-                        $(subject).off(detachStateMap[e.type]);
+                                            e && detachStateMap[e.type] &&
+                                                $(subject).off(detachStateMap[e.type]);
 
-                      $(subject).toggleClass(id) 
+                                            $(subject).toggleClass(id)
+                                        };
+
+                                    i && (parsed += ',');
+
+                                    parsed += '.' + id;
+                                    ! state ? toggleFn() : $(this).on( stateMap[state] || state , toggleFn );
+
+                                });
+                            } else {
+                                parsed += selector;
+                            }
+                        }
+
+                        parsed += declarations;
+
                     };
-                       
-                  i && (parsed += ',');
-                  
-                  parsed += '.' + id;
-                  ! state ? toggleFn() : $(this).on( stateMap[state] || state , toggleFn );
 
-                });
-              } else {
-                parsed += selector;
-              }
-            }
+                    $('<style type="text/css">' + parsed + '</style>').appendTo('head');
 
-            parsed += declarations;
+                };
 
-          };
+            };
 
-          $('<style type="text/css">' + parsed + '</style>').appendTo('head');
+        $('link[rel=stylesheet], style').each(function() {
+            $(this).is('link') ?
+                $.get(this.href).success(function(css) { parse(css); }) : parse($(this).text());
+        });
 
-        };
+    };
 
-      };
-
-    $('link[rel=stylesheet], style').each(function() {
-      $(this).is('link') ? 
-      $.get(this.href).success(function(css) { parse(css); }) : parse($(this).text());
-    });
-
-  };
-
-  $().cssParentSelector()
+    $().cssParentSelector();
 
 })(jQuery);

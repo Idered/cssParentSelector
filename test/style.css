@@ -78,7 +78,7 @@ body {
     margin: 0;
 }
 
-/* 
+/*
  * Addresses font-family inconsistency between 'textarea' and other form elements.
  */
 
@@ -138,9 +138,9 @@ abbr[title] {
  * Addresses style set to 'bolder' in FF3+, S4/5, Chrome
 */
 
-b, 
-strong { 
-    font-weight: bold; 
+b,
+strong {
+    font-weight: bold;
 }
 
 blockquote {
@@ -270,7 +270,7 @@ img {
 }
 
 /*
- * Corrects overflow displayed oddly in IE9 
+ * Corrects overflow displayed oddly in IE9
  */
 
 svg:not(:root) {
@@ -315,7 +315,7 @@ fieldset {
 
 /*
  * 1. Corrects color not being inherited in IE6/7/8/9
- * 2. Corrects text not wrapping in FF3 
+ * 2. Corrects text not wrapping in FF3
  * 3. Corrects alignment displayed oddly in IE6/7
  */
 
@@ -359,8 +359,8 @@ input {
  */
 
 button,
-input[type="button"], 
-input[type="reset"], 
+input[type="button"],
+input[type="reset"],
 input[type="submit"] {
     cursor: pointer; /* 1 */
     -webkit-appearance: button; /* 2 */
@@ -436,7 +436,7 @@ textarea {
    Tables
    ========================================================================== */
 
-/* 
+/*
  * Remove most spacing between table cells
  */
 
@@ -489,7 +489,8 @@ input {
 /* Magic is below */
 
 /* Select paragraph parent of input */
-p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
+p! > input,
+p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
 /* Select any parent of input */
 *! > input, p! > a { background: #fafafa; }
@@ -506,7 +507,7 @@ div.bluebg p! span > a { background: #39f; }
 *! > input.dashed { border-style: dashed; }
 
 /* En empty declaration, just for tests */
-*! > p { 
+*! > p {
 
 }
 
@@ -538,4 +539,7 @@ p:after! > input {
 }
 p! span:first-child> input {
   background-color: #edd;
+}
+select! > option[value="0"][selected="selected"] {
+  color: blue;
 }
