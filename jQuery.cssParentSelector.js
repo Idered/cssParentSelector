@@ -1,5 +1,5 @@
 /**
- * jQuery cssParentSelector 1.0.9
+ * jQuery cssParentSelector 1.0.10
  * https://github.com/Idered/cssParentSelector
  *
  * Copyright 2011-2012, Kasper Mikiewicz
@@ -12,9 +12,11 @@
     $.fn.cssParentSelector = function() {
         var k = 0, i, j,
 
+             // Class that's added to every styled element
             CLASS = 'CPS',
 
             stateMap = {
+                hover: 'mouseover mouseout',
                 checked: 'click',
                 focus: 'focus blur',
                 active: 'mousedown mouseup',
@@ -41,7 +43,21 @@
             parent, target, child, state, declarations,
             pseudoParent, pseudoTarget,
 
-            REGEX = /[\w\s\"\'\.\[\]\(\)\=\*\-\:#]*(?=!)[\w\s\.\,\[\]\(\)\=\*\-\:#>!]+[\w\s\"\'\.\,\[\]\=\:\-#>]*\{{1}[\.\*\/\?\:\^\+\\\=\|\w\s\'-;#%]+\}{1}/gi,
+            REGEXP = [
+                /[\w\s\.\-\:\=\[\]\(\)\'\*\"\^#]*(?=!)/,
+                /[\w\s\.\-\:\=\[\]\(\)\,\*\^$#>!]+/,
+                /[\w\s\.\-\:\=\[\]\'\,\"#>]*\{{1}/,
+                /[\w\s\.\-\:\=\'\*\|\?\^\+\/\\;#%]+\}{1}/
+            ],
+
+            REGEX = new RegExp((function(REGEXP) {
+                var ret = '';
+
+                for (var i = 0; i < REGEXP.length; i++)
+                    ret += REGEXP[i].source;
+
+                return ret;
+            })(REGEXP), "gi"),
 
             parse = function(css) {
 
