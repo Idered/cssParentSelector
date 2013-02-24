@@ -543,3 +543,7 @@ p! span:first-child> input {
 select! > option[value="0"][selected="selected"] {
   color: blue;
 }
+
+#toppanel! > #toggle--toppanel:checked {
+  display: none;
+}

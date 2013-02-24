@@ -1,5 +1,5 @@
 /**
- * jQuery cssParentSelector 1.0.10
+ * jQuery cssParentSelector 1.0.11
  * https://github.com/Idered/cssParentSelector
  *
  * Copyright 2011-2012, Kasper Mikiewicz
@@ -107,7 +107,7 @@
 
                                 child.each(function(i) {
 
-                                    var subject = $(this).parent(parent);
+                                    var subject = $(this)[parent == '*' ? 'parent' : 'closest'](parent);
 
                                     pseudoParent && (subject = pseudoMap[pseudoParent] ?
                                         $('<div></div>')[pseudoMap[pseudoParent]](subject) :
