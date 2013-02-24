@@ -1,11 +1,4 @@
-/**
- * jQuery cssParentSelector 1.0.11
- * https://github.com/Idered/cssParentSelector
- *
- * Copyright 2011-2012, Kasper Mikiewicz
- * Released under the MIT and GPL Licenses.
- * Date 2012-02-08
- */
+/** cssParentSelector 1.0.12 | MIT and GPL Licenses | git.io/cssParentSelector */
 
 (function($) {
 
@@ -44,8 +37,8 @@
             pseudoParent, pseudoTarget,
 
             REGEXP = [
-                /[\w\s\.\-\:\=\[\]\(\)\'\*\"\^#]*(?=!)/,
-                /[\w\s\.\-\:\=\[\]\(\)\,\*\^$#>!]+/,
+                /[\w\s\.\-\:\=\[\]\(\)\~\|\'\*\"\^#]*(?=!)/,
+                /[\w\s\.\-\:\=\[\]\(\)\~\|\,\*\^$#>!]+/,
                 /[\w\s\.\-\:\=\[\]\'\,\"#>]*\{{1}/,
                 /[\w\s\.\-\:\=\'\*\|\?\^\+\/\\;#%]+\}{1}/
             ],

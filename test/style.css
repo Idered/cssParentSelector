@@ -547,3 +547,7 @@ select! > option[value="0"][selected="selected"] {
 #toppanel! > #toggle--toppanel:checked {
   display: none;
 }
+
+p! > [class~="home"] {
+  background: #000;
+}
