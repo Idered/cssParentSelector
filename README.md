@@ -1,44 +1,48 @@
 # What is cssParentSelector
 
-cssParentSelector is a polyfill based on [jQuery](http://jquery.com/) that allows you to use parent selector in CSS.
+cssParentSelector is a polyfill based on [jQuery](http://jquery.com/) that allows you to use the parent selector in your CSS.
 
 ## License
 
-Released under MIT and GPL licenses.
+Released under the MIT and GPL licenses.
 
 ## Installation
 
-Just attach this plugin to your code and that's all.
+Just attach this plugin to your code and that’s all.
 
-    <script src="jQuery.cssParentSelector.js"></script>
+```html
+<script src="jQuery.cssParentSelector.js"></script>
+```
 
 ## Usage
 
-    parent! target > child:state
+```css
+parent! target > child:state
+```
 
-### Quick info about parent selector in CSS4
+### Quick info about the parent selector in CSS4
 
-! - determines subject of selector according to [CSS4 reference](http://dev.w3.org/csswg/selectors4/)
+`!` – determines subject of selector according to the [CSS4 reference](http://dev.w3.org/csswg/selectors4/#subject)
 
-E > F - selects an F element, child of E
+`E > F` – selects an F element, child of E
 
-E! > F - selects an E element, parent of F
+`E! > F` – selects an E element, parent of F
 
 ### Parent
 
-Any vaild selector is okey, id, class, even like this one: input[type=checkbox]
+Any valid selector is okay – ID selectors, class selectors, even selectors like `input[type=checkbox]`.
 
 ### Target
 
-This is optional, after we've got PARENT of our CHILD selector, we look for this TARGET element within PARENT.
+This is optional. After we’ve got the PARENT of our CHILD selector, we look for this TARGET element within PARENT.
 
 ### Child
 
-Based on this, we select PARENT element.
+Based on this, we select the PARENT element.
 
 ### State
 
-As for now plugin supports:
+Currently, the plugin supports:
 
 * changed, selected
 * checked
@@ -72,10 +76,10 @@ As for now plugin supports:
 ```
 
 ```css
-/* Select paragraph parent of input or a*/
+/* Select paragraph parent of input or a */
 p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 
-/* Select any parent of input or a*/
+/* Select any parent of input or a */
 *! > input, p! > a { background: #fafafa; }
 
 /* Select any parent with class of input */
@@ -88,7 +92,7 @@ p! > input, p! > a { border: 1px solid #ccc; padding: 10px 5px; }
 *! > input.dotted { border-style: dotted; }
 *! > input.dashed { border-style: dashed; }=
 
-/* En empty declaration, just for tests */
+/* An empty declaration, just for testing */
 *! > p {
 
 }
@@ -103,10 +107,10 @@ p! > input:changed { background: #EEDC94; }
 /* Select label within parent of focused text input */
 p! label > input[type=text]:focus{ display: block; }
 
-/* Select element with definied class within parent of changed/checked text/checkbox input */
+/* Select element with defined class within parent of changed/checked text/checkbox input */
 p! .message > input[type=text]:changed,
 p! .message > input[type=checkbox]:checked {
-    display: inline;
+  display: inline;
 }
 
 p! span:first-child> input { display: block; }
@@ -120,16 +124,16 @@ p:after! > input {
 
 ## Changelog
 
-* **1.0.9** - *09.09.2012 *
-  * Added support for images in css bacground property (// in image link was interpreted as comment)
+* **1.0.9** - *09.09.2012*
+  * Added support for images in CSS background property (`//` in image link was interpreted as comment)
   * Minified version
 
-* **1.0.8** - *07.02.2012 *
-  * Added support for pseudo classes (after, before, first-child, last-child, nth-child(), active and anything that jquery filter function can handle)
-  * Added !important to all declarations.
+* **1.0.8** - *07.02.2012*
+  * Added support for pseudo classes (`after`, `before`, `first-child`, `last-child`, `nth-child()`, `active` and anything that the jQuery `filter` function can handle)
+  * Added `!important` to all declarations.
 
 * **1.0.7** - *21.01.2012*
-  * Now before matchig css for definied regex we strip comments
+  * Now before matching CSS for defined regex we strip comments
   * Empty declarations are omitted
   * Better regex
   * Optimized code
