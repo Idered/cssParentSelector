@@ -77,8 +77,6 @@
 
                         for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 
-                            // j && (parsed += ',');
-
                             if (/!/.test(selector) ) {
 
                                 // E! P > F => E
