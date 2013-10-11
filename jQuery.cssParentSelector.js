@@ -71,8 +71,7 @@
                         // There's nothing so we can skip this one.
                         if ( declarations === '{}' ) continue;
 
-                        // declarations = declarations.replace(/;/g, ' !important;');
-                        declarations = declarations.replace(/;/g, ';');
+                        declarations = declarations.replace(/;/g, ' !important;');
 
                         for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 
