@@ -73,9 +73,11 @@
 
                         declarations = declarations.replace(/;/g, ' !important;');
 
+                        var hasChild = false;
+
                         for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 
-                            j && (parsed += ',');
+                            // j && (parsed += ',');
 
                             if (/!/.test(selector) ) {
 
@@ -97,6 +99,9 @@
                                 // E! P > F:state => state
                                 state = (selector.split('>')[1].split(/:+/)[1] || '').split(' ')[0] || []._;
 
+                                if(child.length){
+                                    hasChild = true;
+                                }
 
                                 child.each(function(i) {
 
@@ -124,7 +129,7 @@
                                             $(subject).toggleClass(id)
                                         };
 
-                                    i && (parsed += ',');
+                                    (j || i) && (parsed += ',');
 
                                     parsed += '.' + id;
                                     var $this = $(this);
@@ -139,7 +144,12 @@
                             }
                         }
 
-                        parsed += declarations;
+                        if(hasChild){
+
+                            parsed += declarations;
+                            
+                        }
+
 
                     };
 
