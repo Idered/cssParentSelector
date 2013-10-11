@@ -40,7 +40,7 @@
                 /[\w\s\.\-\:\=\[\]\(\)\~\|\'\*\"\^#]*(?=!)/,
                 /[\w\s\.\-\:\=\[\]\(\)\~\|\,\*\^$#>!]+/,
                 /[\w\s\.\-\:\=\[\]\'\,\"#>]*\{{1}/,
-                /[\w\s\.\-\:\=\'\*\|\?\^\+\/\\;#%]+\}{1}/
+                /[\w\s\.\-\:\=\'\*\|\?\^\+\/\\\(\);#%]+\}{1}/
             ],
 
             REGEX = new RegExp((function(REGEXP) {
@@ -71,7 +71,8 @@
                         // There's nothing so we can skip this one.
                         if ( declarations === '{}' ) continue;
 
-                        declarations = declarations.replace(/;/g, ' !important;');
+                        // declarations = declarations.replace(/;/g, ' !important;');
+                        declarations = declarations.replace(/;/g, ';');
 
                         for (j = -1; selectors[++j], selector = $.trim(selectors[j]);) {
 
@@ -127,6 +128,10 @@
                                     i && (parsed += ',');
 
                                     parsed += '.' + id;
+                                    var $this = $(this);
+                                    if($this.is(':checked') && state === 'checked'){
+                                        $(subject).toggleClass(id);
+                                    }
                                     ! state ? toggleFn() : $(this).on( stateMap[state] || state , toggleFn );
 
                                 });
@@ -147,7 +152,7 @@
 
         $('link[rel=stylesheet], style').each(function() {
             $(this).is('link') ?
-                $.get(this.href).success(function(css) { parse(css); }) : parse($(this).text());
+                $.ajax({url:this.href,dataType:'text'}).success(function(css) { parse(css); }) : parse($(this).text());
         });
 
     };
