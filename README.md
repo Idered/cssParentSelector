@@ -1,3 +1,5 @@
+# [DEPRECATED]
+
 # What is cssParentSelector
 
 cssParentSelector is a polyfill based on [jQuery](http://jquery.com/) that allows you to use parent selector in CSS.
